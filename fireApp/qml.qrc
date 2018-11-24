@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>index.html</file>
+        <file>bootstrap.css</file>
+        <file>bootstrap.js</file>
+        <file>jquery.js</file>
+        <file>fire1.png</file>
+        <file>fire2.png</file>
+        <file>fire-alarm.png</file>
+        <file>r1.png</file>
+        <file>r2.png</file>
+        <file>r3.png</file>
+    </qresource>
+</RCC>
