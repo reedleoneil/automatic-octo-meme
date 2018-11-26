@@ -27,11 +27,12 @@ void loop() {
 		last_sent = now;
 		unsigned long smoke_sensor = analogRead(A0);		        // Read value from sensor
                 unsigned long temp_sensor = analogRead(A1);			// Read value from sensor				
-		char data[8];
+		char data[8];							// Data
+		/* Construct payload */
                 String payload = String(map(smoke_sensor, 0, 1023, 0, 255))     // Map sensor value from 1024 to 256 for smoke sensor value
                                  + " " + 
                                  String(temp_sensor);	                        // Temp sensor reading
-                payload.toCharArray(data, 8);                        
+                payload.toCharArray(data, 8);					// Convert payload to char array                        
 		RF24NetworkHeader header1(_parent_address);			// Construct a header with node address of recipient 		
 		network.write(header1, &data, sizeof(data)); 			// Send the data
                 Serial.println(data);
