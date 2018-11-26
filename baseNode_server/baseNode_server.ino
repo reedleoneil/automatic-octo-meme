@@ -17,6 +17,19 @@ uint8_t _temp_sensor2 = 0;					// Value of temp sensor 2
 uint8_t _temp_sensor3 = 0;					// Value of temp sensor 3
 
 const uint8_t _threshold = 40;					// Threshold value for smoke sensors
+const unsigned long _interval = 1000; //ms 			// Time to detect smoke
+
+unsigned long _s1_last_detected_normal;				// Smoke sensor 1 time last detected normal
+unsigned long _s2_last_detected_normal;				// Smoke sensor 2 time last detected normal
+unsigned long _s3_last_detected_normal;				// Smoke sensor 3 time last detected normal
+
+unsigned long _s1_last_detected_threshold;			// Smoke sensor 1 time last detected threshold
+unsigned long _s2_last_detected_threshold;			// Smoke sensor 2 time last detected threshold
+unsigned long _s3_last_detected_threshold;			// Smoke sensor 3 time last detected threshold
+
+bool _s1_triggered;						// Sensor 1: is smoke detected?
+bool _s2_triggered;						// Sensor 2: is smoke detected?
+bool _s3_triggered;						// Sensor 3: is smoke detected?
 
 RF24 radio(31, 33); 				                // nRF24L01 (CE,CSN)
 RF24Network network(radio); 					// Include the radio in the network
@@ -62,26 +75,58 @@ void rf24() {							// RF24
                 // Set value for output
 		uint8_t pin;						
 		uint8_t value = String(data).toInt() >= _threshold ? HIGH : LOW;
+		
+		// Set local variables for smoke detection
+		uint8_t smoke_sensor;
+		unsigned long *last_detected_threshold;
+		unsigned long *last_detected_normal;
+		bool *sensor_triggered;
+		
+		unsigned long now = millis();			
 
 		switch (header.from_node) {			// Handle header and process data
 			case 1:    				
 				_smoke_sensor1 = smoke;		// Save value from smoke sensor 1
                                 _temp_sensor1 = temp;		// Save value from temp sensor 1
 				pin = _out1;			// Set output
+				smoke_sensor = _smoke_sensor1;
+				last_detected_threshold = &_s1_last_detected_threshold;
+				last_detected_normal = &_s1_last_detected_normal;
+				sensor_triggered = &_s1_triggered;
 		      		break;
 		    	case 2:    				
 				_smoke_sensor2 = smoke;		// Save value from smoke sensor 2
                                 _temp_sensor2 = temp;		// Save value from temp sensor 2
 		      		pin = _out2;			// Set output
+				smoke_sensor = _smoke_sensor2;
+				last_detected_threshold = &_s2_last_detected_threshold;
+				last_detected_normal = &_s2_last_detected_normal;
+				sensor_triggered = &_s2_triggered;
 		      		break;
 		    	case 3:    				
 				_smoke_sensor3 = smoke;		// Save value from smoke sensor 3
                                 _temp_sensor3 = temp;		// Save value from temp sensor 3
 		      		pin = _out3;			// Set output
+				smoke_sensor = _smoke_sensor3;
+				last_detected_threshold = &_s3_last_detected_threshold;
+				last_detected_normal = &_s3_last_detected_normal;
+				sensor_triggered = &_s3_triggered;
 				break;
 		}
-
-		digitalWrite(pin, value);			// Write value to output
+		
+		if (smoke_sensor >= _threshold) {
+			last_detected_threshold = now;
+			if (now - last_detected_normal >= _interval) {
+				sensor_triggered = true;
+				digitalWrite(pin, HIGH);			// Write value to output
+			}
+		} else {
+			last_detected_normal = now;
+			if (now - last_detected_threshold >= _interval) {
+				sensor_triggered = false;
+				digitalWrite(pin, LOW);			// Write value to output
+			}
+		}
 	}     
 }
 
