@@ -33,9 +33,9 @@ void loop() {
 	if (now - last_sent >= interval) { 					// If it's time to send a data, send it!
 		last_sent = now;
 		unsigned long smoke_sensor = analogRead(A0);		        // Read value from sensor
-                unsigned long temp_sensor = analogRead(A1);			// Read value from sensor
+                //unsigned long temp_sensor = analogRead(A1);			// Read value from sensor
                 sensors.requestTemperatures(); 
-                temp_sensor=sensors.getTempCByIndex(0);				
+                unsigned long temp_sensor = sensors.getTempCByIndex(0);				
 		char data[8];							// Data
 		/* Construct payload */
                 String payload = String(map(smoke_sensor, 0, 1023, 0, 255))     // Map sensor value from 1024 to 256 for smoke sensor value
