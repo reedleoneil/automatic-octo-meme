@@ -154,7 +154,9 @@ void ethernet() {									// Ethernet
                                                 ", \"temp_sensor3\": " + String(_temp_sensor3) + 
                                                 ", \"s1_triggered\": " + String(_s1_triggered) + 
                                                 ", \"s2_triggered\": " + String(_s2_triggered) + 
-						", \"s3_triggered\": " + String(_s3_triggered) + " }");
+						", \"s2_triggered\": " + String(_s3_triggered) + 
+						", \"threshold\": " + String(_threshold) + 
+						", \"interval\": " + String(_interval) + " }");
 				  	break;
 				}
 				if (c == '\n') {
