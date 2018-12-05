@@ -70,8 +70,8 @@ void rf24() {							// RF24
                 // Parse data
                 String payload(data);
                 uint8_t smoke = payload.substring(0, payload.indexOf(" ")).toInt();
-                //uint8_t temp = payload.substring(payload.indexOf(" ") + 1, payload.length()).toInt();
-                uint8_t temp = map(payload.substring(payload.indexOf(" ") + 1, payload.length()).toInt(), 0, 1024, 0, 256);
+                uint8_t temp = payload.substring(payload.indexOf(" ") + 1, payload.length()).toInt();
+                //uint8_t temp = map(payload.substring(payload.indexOf(" ") + 1, payload.length()).toInt(), 0, 1024, 0, 256);
 	
 		unsigned long now = millis();			
 
