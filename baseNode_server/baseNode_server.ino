@@ -7,6 +7,7 @@
 const uint8_t _out1 = 22;					// Led 1
 const uint8_t _out2 = 24;					// Led 2
 const uint8_t _out3 = 26;					// Led 3
+const uint8_t _buzzer = 44;					// Buzzer
 
 uint8_t _smoke_sensor1 = 0;					// Value of smoke sensor 1			
 uint8_t _smoke_sensor2 = 0;					// Value of smoke sensor 2
@@ -53,6 +54,7 @@ void setup() 							// Setup
 	pinMode(_out1, OUTPUT);					// Set pin mode of out 1
 	pinMode(_out2, OUTPUT);					// Set pin mode of out 2
 	pinMode(_out3, OUTPUT);					// Set pin mode of out 3
+	pinMode(_buzzer, OUTPUT);				// Set pin mode of out buzzer
 }
 
 void loop() {							// Loop
@@ -127,6 +129,12 @@ void rf24() {							// RF24
                 			}
                 		}
 				break;
+		}
+		
+		if (_s1_triggered == true || _s2_triggered == true || _s3_triggered == true) {
+			digitalWrite(_buzzer, HIGH);
+		} else {
+			digitalWrite(_buzzer, LOW);
 		}
 	}     
 }
