@@ -11,5 +11,9 @@
         <file>r1.png</file>
         <file>r2.png</file>
         <file>r3.png</file>
+        <file>siren.mp3</file>
+        <file>siren.wav</file>
+        <file>sparkline.js</file>
+        <file>splash.jpg</file>
     </qresource>
 </RCC>

@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Fire App">
@@ -7,26 +7,197 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="bootstrap.js"></script>
+    <script type="text/javascript" src="sparkline.js"></script>
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
+
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            text-align: center;
+        }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidenav a:hover {
+                    color: #f1f1f1;
+                }
+
+        .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+                .sidenav a {
+                    font-size: 18px;
+                }
+        }
+
+        .table td {
+            text-align: center;
+        }
+
+        .slidecontainer {
+            width: 100%;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+            .slider:hover {
+                opacity: 1;
+            }
+
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                background: #818181;
+                cursor: pointer;
+            }
+
+            .slider::-moz-range-thumb {
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                background: #818181;
+                cursor: pointer;
+            }
+    </style>
 </head>
 <body>
-    <div style="position: relative; height: 100%; width: 100%;">
-        <img id="splashscreen" align="middle" style="z-index: 4; position: absolute; height:100%; width:100%;" src="splash.jpg" />
+    <audio id="myAudio">
+        <source src="siren.wav" type="audio/ogg">
+        <source src="siren.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="mySidenav" class="sidenav" style="z-index: 19; background-image: url('splash.jpg'); background-size: cover;">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a id="navSettings" href="#" style="color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;" onclick="openSettings()">Settings</a>
+        <a id="navAbout" href="#" style="color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;" onclick="openAbout()">About</a>
+    </div>
+
+    <div id="main" style="position: relative; height: 100%; width: 100%;">
+	<div id="splashscreen" >
+			<div style="z-index: 5; position: absolute; height: 100%;">
+				<div style="height: 40%;"></div>
+				<div style="color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue; text-align: center;">Development of Pathfinder System Via Centralized Smoke-Sensor Communication in Case of Fire</div>
+				<div style="height: 30%;"></div>		
+				<div style="color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue; text-align: center;">Tap screen to continue...</div>
+			</div>
+			<img align="middle" style="z-index: 4; position: absolute; height:100%; width:100%;" src="splash.jpg" />
+	</div>
+
 
         <div id="smoke_sensor1" style="visibility: hidden; z-index: 2; position: absolute; height:auto; width:auto; top: 50%; left: 30%; font-size: 150%;"></div>
         <div id="smoke_sensor2" style="visibility: hidden; z-index: 2; position: absolute; height:auto; width:auto; top: 20%; left: 30%; font-size: 150%;"></div>
         <div id="smoke_sensor3" style="visibility: hidden; z-index: 2; position: absolute; height:auto; width:auto; top: 80%; left: 30%; font-size: 150%;"></div>
 
-        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 26%; left: 36.5%; font-size: 150%;"><span id="temp_sensor1">32</span><span> °C</span></div>
-        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 78%; left: 36.5%; font-size: 150%;"><span id="temp_sensor2">32</span><span> °C</span></div>
-        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 43%; left: 79%; font-size: 150%;"><span id="temp_sensor3">32</span><span> °C</span></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 27%; left: 36.5%; font-size: 100%;"><span id="temp_sensor1">32</span><sup> °C</sup> <span class="smoke_sensor1_sparkline">Loading..</span></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 81%; left: 36.5%; font-size: 100%;"><span id="temp_sensor2">32</span><sup> °C</sup> <span class="smoke_sensor2_sparkline">Loading..</span></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 43%; left: 79%; font-size: 100%;"><span id="temp_sensor3">32</span><sup> °C</sup> <span class="smoke_sensor3_sparkline">Loading..</span></div>
 
         <img id="r001" align="middle" style="z-index: 1; position: absolute; height: 100%; width: 100%;" src="r1.png" />
         <img id="r002" align="middle" style="z-index: 1; position: absolute; height: 100%; width: 100%;" src="r2.png" />
         <img id="r003" align="middle" style="z-index: 1; position: absolute; height: 100%; width: 100%;" src="r3.png" />
 
         <img align="middle" style="z-index: 0; position: absolute; height: 100%; width: 100%;" src="fire2.png" />
-        <img id="floorplan" align="middle" style="z-index: 0; position: absolute; height: 100%; width: 100%;" src="fire1.png" />
+        <img id="floorplan" align="middle" style="z-index: 0; position: absolute; height: 100%; width: 100%;" src="fire1.png" onclick="openNav()" />
+    </div>
+
+    <div id="settings" style="z-index: 5; height: 100%; width: 100%; padding-top: 15%;">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSettings()">&times;</a>
+        <table class="table" style="font-size: 80%; text-align: center;">
+            <thead>
+                <tr>
+                    <th text-align="center">Room</th>
+                    <th text-align="center">Smoke</th>
+                    <th text-align="center">Temperature</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td text-align="center">208</td>
+                    <td text-align="center"><span id="s_1"></span> <span class="smoke_sensor1_sparkline">Loading..</span></td>
+                    <td text-align="center"><span id="t_1"></span> °C <span class="temp_sensor1_sparkline">Loading..</span></td>
+                </tr>
+                <tr>
+                    <td text-align="center">212</td>
+                    <td text-align="center"><span id="s_2"></span> <span class="smoke_sensor2_sparkline">Loading..</span></td>
+                    <td text-align="center"><span id="t_2"></span> °C <span class="temp_sensor2_sparkline">Loading..</span></td>
+                </tr>
+                <tr>
+                    <td text-align="center">203</td>
+                    <td text-align="center"><span id="s_3"></span> <span class="smoke_sensor3_sparkline">Loading..</span></td>
+                    <td text-align="center"><span id="t_3"></span> °C <span class="temp_sensor3_sparkline">Loading..</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="slidecontainer">
+            <input id="thresholdSlider" type="range" min="1" max="255" value="40" class="slider" onmouseup="setPreference()" ontouchend="setPreference()" ontouchstart="configuring = true;" onmousedown="configuring = true;">
+            <p>Threshold Value: <span id="threshold"></span></p>
+        </div>
+        <div class="slidecontainer">
+            <input id="intervalSlider" type="range" min="1" max="10000" value="5000" class="slider" onmouseup="setPreference()" ontouchend="setPreference()" ontouchstart="configuring = true;" onmousedown="configuring = true;">
+            <p>Detection Interval: <span id="interval"></span></p>
+        </div>
+    </div>
+
+    <div id="about" style="z-index: 5; height: 100%; width: 100%; padding: 20%">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeAbout()">&times;</a>
+        <div style="text-align: center; font-size: 70%;">Repbulic of the Philippines</div>
+        <div style="text-align: center; font-size: 70%;">BULACAN STATE UNIVERSITY</div>
+        <div style="text-align: center; font-size: 70%;">College of Engineering</div>
+        <div style="text-align: center; font-size: 70%;">MECHATRONICS ENGINEERING DEPARTMENT</div>
+        <div style="text-align: center; font-size: 70%;">City of Malolos, Bulacan</div>
     </div>
 </body>
 
@@ -38,6 +209,18 @@
     $("#r001").fadeOut();
     $("#r002").fadeOut();
     $("#r003").fadeOut();
+
+    $("#about").fadeOut();
+    $("#settings").fadeOut();
+
+    var configuring = false;
+
+    var smoke1 = [0, 0, 0, 0, 0, 0, 0];
+    var smoke2 = [0, 0, 0, 0, 0, 0, 0];
+    var smoke3 = [0, 0, 0, 0, 0, 0, 0];
+    var temp1 = [0, 0, 0, 0, 0, 0, 0];
+    var temp2 = [0, 0, 0, 0, 0, 0, 0];
+    var temp3 = [0, 0, 0, 0, 0, 0, 0];
 
     var alarm = setInterval(function () {
         if (r001) {
@@ -63,26 +246,84 @@
     }, 1000);
 
     var sensors = setInterval(function () {
-        $.post("http://192.168.10.177/", { data: 1 } ,function (data, status) {
+        $.post("http://192.168.10.177/", function (data, status) {
             data = JSON.parse(data);
+
             if (data.s1_triggered)
+            {
                 r001 = true;
+            }
             else
+            {
                 r001 = false;
+            }
+
             if (data.s2_triggered)
+            {
                 r002 = true;
-            else
+            }
+	    else
+            {
                 r002 = false;
+            }
+
             if (data.s3_triggered)
+            {
                 r003 = true;
+            }
             else
+            {
                 r003 = false;
+            }
+
             $("#smoke_sensor1").text(data.smoke_sensor1);
             $("#smoke_sensor2").text(data.smoke_sensor2);
             $("#smoke_sensor3").text(data.smoke_sensor3);
             $("#temp_sensor1").text(data.temp_sensor1);
             $("#temp_sensor2").text(data.temp_sensor2);
             $("#temp_sensor3").text(data.temp_sensor3);
+
+	    $("#s_1").text(data.smoke_sensor1);
+            $("#s_2").text(data.smoke_sensor2);
+            $("#s_3").text(data.smoke_sensor3);
+            $("#t_1").text(data.temp_sensor1);
+            $("#t_2").text(data.temp_sensor2);
+            $("#t_3").text(data.temp_sensor3);
+
+            smoke1.shift();
+            smoke1.push(data.temp_sensor1);
+            $('.temp_sensor1_sparkline').sparkline(smoke1, { type: 'line' });
+            smoke2.shift();
+            smoke2.push(data.temp_sensor2);
+            $('.temp_sensor2_sparkline').sparkline(smoke2, { type: 'line' });
+            smoke3.shift();
+            smoke3.push(data.temp_sensor3);
+            $('.temp_sensor3_sparkline').sparkline(smoke3, { type: 'line' });
+            temp1.shift();
+            temp1.push(data.smoke_sensor1);
+            $('.smoke_sensor1_sparkline').sparkline(temp1, { type: 'line' });
+            temp2.shift();
+            temp2.push(data.smoke_sensor2);
+            $('.smoke_sensor2_sparkline').sparkline(temp2, { type: 'line' });
+            temp3.shift();
+            temp3.push(data.smoke_sensor3);
+            $('.smoke_sensor3_sparkline').sparkline(temp3, { type: 'line' });
+
+            var x = document.getElementById("myAudio");
+            if (r001 || r002 || r003) {
+                    //x.play();
+                    //navigator.vibrate(1000);
+            } else {
+                    //x.pause();
+            }
+
+            if(!configuring){
+                document.getElementById("threshold").innerHTML = data.threshold;
+                document.getElementById("thresholdSlider").value = data.threshold;
+                document.getElementById("interval").innerHTML = data.interval;
+                document.getElementById("intervalSlider").value = data.interval;
+            }
+
             console.log(data);
         });
     }, 2000);
@@ -90,6 +331,59 @@
     $("#splashscreen").click(function () {
         $("#splashscreen").fadeOut();
     });
+
+    function openAbout() {
+        closeNav();
+        $("#about").fadeIn();
+        $("#main").fadeOut();
+    }
+
+    function closeAbout() {
+        $("#about").fadeOut();
+        $("#main").fadeIn();
+    }
+
+    function openSettings() {
+        closeNav();
+        $("#settings").fadeIn();
+        $("#main").fadeOut();
+    }
+
+    function closeSettings() {
+        $("#settings").fadeOut();
+        $("#main").fadeIn();
+    }
+
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "100%";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    document.getElementById("thresholdSlider").oninput = function () {
+        document.getElementById("threshold").innerHTML = this.value;
+    }
+
+    document.getElementById("intervalSlider").oninput = function () {
+        document.getElementById("interval").innerHTML = this.value;
+    }
+
+    function setPreference() {
+        configuring = true;
+	var t = document.getElementById("thresholdSlider").value;
+	var i = document.getElementById("intervalSlider").value;
+        $.post("http://192.168.10.177/", { threshold: t, interval: i }, function (data, status) {
+
+	});
+    }
 </script>
 
 </html>
