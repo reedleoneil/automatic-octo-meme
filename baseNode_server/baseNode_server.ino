@@ -17,8 +17,8 @@ uint8_t _temp_sensor1 = 0;					// Value of temp sensor 1
 uint8_t _temp_sensor2 = 0;					// Value of temp sensor 2
 uint8_t _temp_sensor3 = 0;					// Value of temp sensor 3
 
-const uint8_t _threshold = 40;					// Threshold value for smoke sensors
-const unsigned long _interval = 5000; //ms 			// Time to detect smoke
+uint8_t _threshold = 40;					// Threshold value for smoke sensors
+unsigned long _interval = 5000; //ms 			        // Time to detect smoke
 
 unsigned long _s1_last_detected_normal;				// Smoke sensor 1 time last detected normal
 unsigned long _s2_last_detected_normal;				// Smoke sensor 2 time last detected normal
@@ -73,7 +73,6 @@ void rf24() {							// RF24
                 String payload(data);
                 uint8_t smoke = payload.substring(0, payload.indexOf(" ")).toInt();
                 uint8_t temp = payload.substring(payload.indexOf(" ") + 1, payload.length()).toInt();
-                //uint8_t temp = map(payload.substring(payload.indexOf(" ") + 1, payload.length()).toInt(), 0, 1024, 0, 256);
 	
 		unsigned long now = millis();			
 
@@ -136,7 +135,7 @@ void rf24() {							// RF24
 		} else {
 			digitalWrite(_buzzer, LOW);
 		}
-	}     
+	}   
 }
 
 void ethernet() {									// Ethernet
@@ -148,6 +147,18 @@ void ethernet() {									// Ethernet
 				char c = client.read();
                                 //Serial.print(c);
 				if (c == '\n' && currentLineIsBlank) {
+                                        while(client.available()) {
+                                           String payload = client.readString();
+                                           String param1 = payload.substring(0, payload.indexOf("&"));
+                                           String param2 = payload.substring(payload.indexOf("&") + 1, payload.length());
+                                           _threshold = param1.substring(param1.indexOf("=") + 1, param1.length()).toInt();
+                                           _interval = param2.substring(param2.indexOf("=") + 1, param2.length()).toInt();
+                                           Serial.println(payload);	 
+                                           Serial.println(param1);
+                                           Serial.println(param2);
+                                           Serial.println(_threshold);
+                                           Serial.println(_interval);
+                                        }
 					client.println("HTTP/1.1 200 OK");		// Send a standard http response header
 					client.println("Content-Type: text/html");
                                         client.println("Access-Control-Allow-Origin: *");
@@ -162,8 +173,8 @@ void ethernet() {									// Ethernet
                                                 ", \"temp_sensor3\": " + String(_temp_sensor3) + 
                                                 ", \"s1_triggered\": " + String(_s1_triggered) + 
                                                 ", \"s2_triggered\": " + String(_s2_triggered) + 
-						", \"s3_triggered\": " + String(_s3_triggered) + 
-						", \"threshold\": " + String(_threshold) + 
+                                                ", \"s3_triggered\": " + String(_s3_triggered) + 
+                                                ", \"threshold\": " + String(_threshold) + 
 						", \"interval\": " + String(_interval) + " }");
 				  	break;
 				}
