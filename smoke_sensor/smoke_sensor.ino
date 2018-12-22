@@ -20,7 +20,7 @@ DallasTemperature sensors(&oneWire);
 float _celcius = 0;
 
 void setup() {
-        Serial.begin(9600);
+        //Serial.begin(9600);
 	radio.begin();								// Begin operation of the nRF24L01
         radio.setDataRate(RF24_2MBPS);                                          // Set data rate
 	network.begin(_channel, _node_address); 				// Begin network (channel, node address)
@@ -33,9 +33,9 @@ void loop() {
 	if (now - last_sent >= interval) { 					// If it's time to send a data, send it!
 		last_sent = now;
 		unsigned long smoke_sensor = analogRead(A0);		        // Read value from sensor
-                //unsigned long temp_sensor = analogRead(A1);			// Read value from sensor
+                unsigned long temp_sensor = analogRead(A1);			// Read value from sensor
                 sensors.requestTemperatures(); 
-                unsigned long temp_sensor = sensors.getTempCByIndex(0);				
+                temp_sensor=sensors.getTempCByIndex(0);				
 		char data[8];							// Data
 		/* Construct payload */
                 String payload = String(map(smoke_sensor, 0, 1023, 0, 255))     // Map sensor value from 1024 to 256 for smoke sensor value
@@ -47,4 +47,3 @@ void loop() {
                 Serial.println(data);
 	}
 }
-
