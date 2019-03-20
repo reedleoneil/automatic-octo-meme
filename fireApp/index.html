@@ -151,21 +151,21 @@
         <img align="middle" style="z-index: 0; position: absolute; height: 100%; width: 100%;" src="fire3.png" />
         <img id="floorplan" align="middle" style="z-index: 0; position: absolute; height: 100%; width: 100%;" src="fire3.png" onclick="openNav()" />
 
-	<img class="flow-c" style="z-index: 3; position: absolute; top: 80%; left: 27.5%; height: 10%; width: 5%;" src="flow.gif" />
-	<img class="flow-c" style="z-index: 3; position: absolute; top: 70%; left: 27.5%; height: 10%; width: 5%;" src="flow.gif" />
+	<img class="flow_c" style="z-index: 3; position: absolute; top: 80%; left: 27.5%; height: 10%; width: 5%;" src="flow.gif" />
+	<img class="flow_c" style="z-index: 3; position: absolute; top: 70%; left: 27.5%; height: 10%; width: 5%;" src="flow.gif" />
 
-	<img class="flow-d" style="z-index: 3; position: absolute; top: 80%; left: 66.5%; height: 10%; width: 5%;" src="flow.gif" />
-	<img class="flow-d" style="z-index: 3; position: absolute; top: 70%; left: 66.5%; height: 10%; width: 5%;" src="flow.gif" />
+	<img class="flow_d" style="z-index: 3; position: absolute; top: 80%; left: 66.5%; height: 10%; width: 5%;" src="flow.gif" />
+	<img class="flow_d" style="z-index: 3; position: absolute; top: 70%; left: 66.5%; height: 10%; width: 5%;" src="flow.gif" />
 
-	<img class="flow-a" style="z-index: 3; position: absolute; top: 5%; left: 27.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
-	<img class="flow-a" style="z-index: 3; position: absolute; top: 15%; left: 27.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
-	<img class="flow-a" style="z-index: 3; position: absolute; top: 25%; left: 27.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
-	<img class="flow-a" style="z-index: 3; position: absolute; top: 35%; left: 27.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
+	<img class="flow_a" style="z-index: 3; position: absolute; top: 5%; left: 27.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
+	<img class="flow_a" style="z-index: 3; position: absolute; top: 15%; left: 27.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
+	<img class="flow_a" style="z-index: 3; position: absolute; top: 25%; left: 27.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
+	<img class="flow_a" style="z-index: 3; position: absolute; top: 35%; left: 27.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
 
-	<img class="flow-b" style="z-index: 3; position: absolute; top: 5%; left: 66.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
-	<img class="flow-b" style="z-index: 3; position: absolute; top: 15%; left: 66.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
-	<img class="flow-b" style="z-index: 3; position: absolute; top: 25%; left: 66.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
-	<img class="flow-b" style="z-index: 3; position: absolute; top: 35%; left: 66.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
+	<img class="flow_b" style="z-index: 3; position: absolute; top: 5%; left: 66.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
+	<img class="flow_b" style="z-index: 3; position: absolute; top: 15%; left: 66.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
+	<img class="flow_b" style="z-index: 3; position: absolute; top: 25%; left: 66.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
+	<img class="flow_b" style="z-index: 3; position: absolute; top: 35%; left: 66.5%; height: 10%; width: 5%; transform: rotate(180deg);" src="flow.gif" />
     </div>
 
     <div id="settings" style="z-index: 5; height: 100%; width: 100%; padding-top: 15%;">
@@ -229,6 +229,11 @@
     $("#about").fadeOut();
     $("#settings").fadeOut();
 
+    $(".flow_a").fadeOut();
+    $(".flow_b").fadeOut();
+    $(".flow_c").fadeOut();
+    $(".flow_d").fadeOut();
+
     var configuring = false;
 
     var smoke1 = [0, 0, 0, 0, 0, 0, 0];
@@ -254,10 +259,47 @@
             $("#r003").fadeOut();
         }
 
-        if (r001 || r002 || r003) {
-            $("#floorplan").fadeOut();
-            $("#floorplan").fadeIn();
-        }
+	if (r001 && !r002 && !r003) {
+	    $(".flow_a").fadeIn();
+	    $(".flow_b").fadeIn();
+	    $(".flow_d").fadeIn();
+            $(".flow_c").fadeOut();
+        }else if (!r001 && r002 && !r003) {
+	    $(".flow_a").fadeIn();
+	    $(".flow_c").fadeIn();
+	    $(".flow_d").fadeIn();
+  	    $(".flow_b").fadeOut();
+	}else if (!r001 && !r002 && r003) {
+	    $(".flow_a").fadeIn();
+	    $(".flow_b").fadeIn();
+	    $(".flow_c").fadeIn();
+	    $(".flow_d").fadeOut();
+	}else if (!r001 && r002 && r003) {
+	    $(".flow_a").fadeIn();
+	    $(".flow_c").fadeIn();
+	    $(".flow_b").fadeOut();
+	    $(".flow_d").fadeOut();
+	}else if (r001 && r002 && !r003) {
+	    $(".flow_a").fadeIn();
+	    $(".flow_d").fadeIn();
+	    $(".flow_c").fadeOut();
+	    $(".flow_b").fadeOut();
+	}else if (r001 && !r002 && r003) {
+	    $(".flow_a").fadeIn();
+	    $(".flow_b").fadeIn();
+	    $(".flow_c").fadeOut();
+	    $(".flow_d").fadeOut();
+	}else if (r001 && r002 && r003) {
+	    $(".flow_a").fadeIn();
+	    $(".flow_b").fadeOut();
+	    $(".flow_c").fadeOut();
+	    $(".flow_d").fadeOut();
+	}else if (!r001 && !r002 && !r003) {
+	    $(".flow_a").fadeOut();
+	    $(".flow_b").fadeOut();
+	    $(".flow_c").fadeOut();
+	    $(".flow_d").fadeOut();
+	}
 
     }, 1000);
 
