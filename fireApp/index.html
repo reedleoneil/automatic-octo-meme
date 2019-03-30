@@ -136,19 +136,19 @@
 	</div>
 
 
-        <div id="smoke_sensor1" style="visibility: hidden; z-index: 2; position: absolute; height:auto; width:auto; top: 50%; left: 30%; font-size: 150%;"></div>
-        <div id="smoke_sensor2" style="visibility: hidden; z-index: 2; position: absolute; height:auto; width:auto; top: 20%; left: 30%; font-size: 150%;"></div>
-        <div id="smoke_sensor3" style="visibility: hidden; z-index: 2; position: absolute; height:auto; width:auto; top: 80%; left: 30%; font-size: 150%;"></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 73%; left: 7%; font-size: 100%;"><span id="smoke_sensor1">2000</span> <span class="smoke_sensor1_sparkline">Loading..</span></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 41%; left: 79%; font-size: 100%;"><span id="smoke_sensor2">2000</span> <span class="smoke_sensor2_sparkline">Loading..</span></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 71%; left: 79%; font-size: 100%;"><span id="smoke_sensor3">2000</span> <span class="smoke_sensor3_sparkline">Loading..</span></div>
 
-        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 63%; left: 7%; font-size: 100%;"><span id="temp_sensor1">32</span><sup> °C</sup> <span class="smoke_sensor1_sparkline">Loading..</span></div>
-        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 31%; left: 79%; font-size: 100%;"><span id="temp_sensor2">32</span><sup> °C</sup> <span class="smoke_sensor2_sparkline">Loading..</span></div>
-        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 61%; left: 79%; font-size: 100%;"><span id="temp_sensor3">32</span><sup> °C</sup> <span class="smoke_sensor3_sparkline">Loading..</span></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 63%; left: 7%; font-size: 100%;"><span id="temp_sensor1">32</span><sup> °C</sup></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 31%; left: 79%; font-size: 100%;"><span id="temp_sensor2">32</span><sup> °C</sup></div>
+        <div style="z-index: 2; position: absolute; height:auto; width:auto; top: 61%; left: 79%; font-size: 100%;"><span id="temp_sensor3">32</span><sup> °C</sup></div>
 
         <img id="r001" align="middle" style="z-index: 1; position: absolute; height: 100%; width: 100%;" src="r1_.png" />
         <img id="r002" align="middle" style="z-index: 1; position: absolute; height: 100%; width: 100%;" src="r2_.png" />
         <img id="r003" align="middle" style="z-index: 1; position: absolute; height: 100%; width: 100%;" src="r3_.png" />
 
-        <img align="middle" style="z-index: 0; position: absolute; height: 100%; width: 100%;" src="fire3.png" />
+        <!--<img align="middle" style="z-index: 0; position: absolute; height: 100%; width: 100%;" src="fire3.png" />-->
         <img id="floorplan" align="middle" style="z-index: 0; position: absolute; height: 100%; width: 100%;" src="fire3.png" onclick="openNav()" />
 
 	<img class="flow_c" style="z-index: 3; position: absolute; top: 80%; left: 27.5%; height: 10%; width: 5%;" src="flow.gif" />
@@ -180,17 +180,17 @@
             </thead>
             <tbody>
                 <tr>
-                    <td text-align="center">208</td>
+                    <td text-align="center">ICE1</td>
                     <td text-align="center"><span id="s_1"></span> <span class="smoke_sensor1_sparkline">Loading..</span></td>
                     <td text-align="center"><span id="t_1"></span> °C <span class="temp_sensor1_sparkline">Loading..</span></td>
                 </tr>
                 <tr>
-                    <td text-align="center">212</td>
+                    <td text-align="center">E103</td>
                     <td text-align="center"><span id="s_2"></span> <span class="smoke_sensor2_sparkline">Loading..</span></td>
                     <td text-align="center"><span id="t_2"></span> °C <span class="temp_sensor2_sparkline">Loading..</span></td>
                 </tr>
                 <tr>
-                    <td text-align="center">203</td>
+                    <td text-align="center">E102</td>
                     <td text-align="center"><span id="s_3"></span> <span class="smoke_sensor3_sparkline">Loading..</span></td>
                     <td text-align="center"><span id="t_3"></span> °C <span class="temp_sensor3_sparkline">Loading..</span></td>
                 </tr>
@@ -198,7 +198,7 @@
         </table>
 
         <div class="slidecontainer">
-            <input id="thresholdSlider" type="range" min="1" max="255" value="40" class="slider" onmouseup="setPreference()" ontouchend="setPreference()" ontouchstart="configuring = true;" onmousedown="configuring = true;">
+            <input id="thresholdSlider" type="range" min="1" max="5000" value="2000" class="slider" onmouseup="setPreference()" ontouchend="setPreference()" ontouchstart="configuring = true;" onmousedown="configuring = true;">
             <p>Threshold Value: <span id="threshold"></span></p>
         </div>
         <div class="slidecontainer">
@@ -214,6 +214,12 @@
         <div style="text-align: center; font-size: 70%;">College of Engineering</div>
         <div style="text-align: center; font-size: 70%;">MECHATRONICS ENGINEERING DEPARTMENT</div>
         <div style="text-align: center; font-size: 70%;">City of Malolos, Bulacan</div>
+        <div style="text-align: center; font-size: 70%; height: 30%;">&nbsp;</div>
+        <div style="text-align: center; font-size: 70%;">Development of Pathfinder System Via Centralized Smoke-Sensor Communication in Case of Fire</div>
+        <div style="text-align: center; font-size: 70%; height: 30%;">&nbsp;</div>
+        <div style="text-align: center; font-size: 70%;">Dela Cruz, Aruel Jay N.</div>
+        <div style="text-align: center; font-size: 70%;">Francisco, Nicka Danielle V.</div>
+        <div style="text-align: center; font-size: 70%;">Yamat, Aljon S.</div>
     </div>
 </body>
 
@@ -304,7 +310,7 @@
     }, 1000);
 
     var sensors = setInterval(function () {
-        $.post("http://192.168.10.177/", function (data, status) {
+        $.post("http://192.168.0.177/", function (data, status) {
             data = JSON.parse(data);
 
             if (data.s1_triggered)
@@ -438,7 +444,7 @@
         configuring = true;
 	var t = document.getElementById("thresholdSlider").value;
 	var i = document.getElementById("intervalSlider").value;
-        $.post("http://192.168.10.177/", { threshold: t, interval: i }, function (data, status) {
+        $.post("http://192.168.0.177/", { threshold: t, interval: i }, function (data, status) {
 
 	});
     }

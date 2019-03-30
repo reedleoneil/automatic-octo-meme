@@ -15,5 +15,10 @@
         <file>siren.wav</file>
         <file>sparkline.js</file>
         <file>splash.jpg</file>
+        <file>r3_.png</file>
+        <file>r2_.png</file>
+        <file>r1_.png</file>
+        <file>flow.gif</file>
+        <file>fire3.png</file>
     </qresource>
 </RCC>
