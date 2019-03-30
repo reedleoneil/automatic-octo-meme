@@ -16,7 +16,7 @@ Window {
     Timer {
            interval: 1000; running: true; repeat: true
            onTriggered: {
-               request('http://192.168.10.177', function (o) {
+               request('http://192.168.0.177', function (o) {
 
                                        // log the json response
                                        console.log(o.responseText);
