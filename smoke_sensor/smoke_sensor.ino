@@ -38,7 +38,7 @@ void loop() {
                 temp_sensor=sensors.getTempCByIndex(0);				
 		char data[8];							// Data
 		/* Construct payload */
-                String payload = String(map(smoke_sensor, 0, 1023, 0, 255))     // Map sensor value from 1024 to 256 for smoke sensor value
+                String payload = String(map(smoke_sensor, 0, 1023, 0, 5000))     // Map sensor value from 1024 to 256 for smoke sensor value
                                  + " " + 
                                  String(temp_sensor);	                        // Temp sensor reading
                 payload.toCharArray(data, 8);					// Convert payload to char array                        
