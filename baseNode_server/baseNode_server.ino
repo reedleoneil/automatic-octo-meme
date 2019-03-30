@@ -17,7 +17,7 @@ uint8_t _temp_sensor1 = 0;					// Value of temp sensor 1
 uint8_t _temp_sensor2 = 0;					// Value of temp sensor 2
 uint8_t _temp_sensor3 = 0;					// Value of temp sensor 3
 
-uint8_t _threshold = 40;					// Threshold value for smoke sensors
+unsigned long _threshold = 2000;					// Threshold value for smoke sensors
 unsigned long _interval = 5000; //ms 			        // Time to detect smoke
 
 unsigned long _s1_last_detected_normal;				// Smoke sensor 1 time last detected normal
@@ -39,7 +39,7 @@ const uint16_t _node_address = 00; 				// Address of this node in Octal format (
 const uint8_t _channel = 90; 					// Radio frequency channel to operate
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };		// MAC Address
-IPAddress ip(192, 168, 10, 177);				// IP Address
+IPAddress ip(192, 168, 0, 177);				// IP Address
 EthernetServer server(80);					// Initialize the Ethernet on port 80 
 
 void setup() 							// Setup
